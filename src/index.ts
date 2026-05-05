@@ -3,13 +3,27 @@ import express from 'express'
 import router from './routes/api'
 dotenv.config()
 
-const app = express()
-const PORT = process.env.PORT || 3000
+import db from './utils/database'
 
-app.use(express.json())
-app.use(express.urlencoded({ extended: true }))
-app.use('/api', router)
+async function init() {
+  try {
+    const result = await db()
 
-app.listen(PORT, () => {
-  console.log(`Server is running at http://localhost:${PORT}`)
-})
+    console.log('Database status:', result)
+
+    const app = express()
+    const PORT = process.env.PORT || 3000
+
+    app.use(express.json())
+    app.use(express.urlencoded({ extended: true }))
+    app.use('/api', router)
+
+    app.listen(PORT, () => {
+      console.log(`Server is running at http://localhost:${PORT}`)
+    })
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+init()
