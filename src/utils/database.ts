@@ -1,8 +1,6 @@
 import mongoose from 'mongoose'
-import dotenv from 'dotenv'
-dotenv.config()
 
-import { DATABASE_URL } from './env'
+import { DATABASE_URL, NODE_ENV } from './env'
 
 const connect = async () => {
   try {
@@ -11,7 +9,7 @@ const connect = async () => {
     })
 
     // Sync Index
-    if (process.env.NODE_ENV !== 'production') {
+    if (NODE_ENV !== 'production') {
       await mongoose.syncIndexes()
     }
 
