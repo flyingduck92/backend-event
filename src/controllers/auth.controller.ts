@@ -20,7 +20,7 @@ const registerSchema = yup.object({
     .max(20, 'Username must be at most 20 characters')
     .matches(
       /^[A-Za-z0-9._]+$/,
-      'We only accept uppercase letters, uppercase letters, numbers, period, and underscore.',
+      'We only accept letters, numbers, period, and underscore.',
     )
     .required('Username is required'),
   email: yup
@@ -139,6 +139,12 @@ export default {
   },
 
   async login(req: Request, res: Response) {
+    /**
+      #swagger.requestBody = {
+        required: true,
+        schema: {$ref: "#/components/schemas/LoginRequest"} 
+      }
+     */
     const { identifier, password } = req.body as unknown as loginType
 
     try {
@@ -200,6 +206,11 @@ export default {
   },
 
   async me(req: IReqUser, res: Response) {
+    /**
+      #swagger.security = [{
+        "bearerAuth": []
+      }]
+     */
     try {
       const user = req.user
       const result = await UserModel.findById(user?.id)
