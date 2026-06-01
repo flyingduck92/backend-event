@@ -12,7 +12,7 @@ const doc = {
       description: 'Local Server',
     },
     {
-      url: 'https://backend-event-theta.vercel.app/api/',
+      url: 'https://backend-event-rust.vercel.app/api/',
       description: 'Deployed Server',
     },
   ],
