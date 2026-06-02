@@ -32,11 +32,25 @@ const registerSchema = yup.object({
     .string()
     .trim()
     .min(6, 'Password must be at least 6 characters')
+    .test(
+      'at-least-one-uppercase-letter',
+      'Contains at least one uppercase letter',
+      (value) => {
+        if (!value) return false
+        const regex = /^(?=.*[A-Z])/
+        return regex.test(value)
+      },
+    )
+    .test('at-least-one-number', 'Contains at least one number', (value) => {
+      if (!value) return false
+      const regex = /^(?=.*\d)/
+      return regex.test(value)
+    })
     .required('Password is required'),
   passwordConfirm: yup
     .string()
     .trim()
-    .required()
+    .required('Password did not match')
     .oneOf([yup.ref('password')], 'Password did not match'),
 })
 
@@ -49,6 +63,13 @@ type loginType = {
 
 export default {
   async register(req: Request, res: Response) {
+    /**
+      #swagger.tags = ['Auth']
+      #swagger.requestBody = {
+        required: true,
+        schema: {$ref: "#/components/schemas/RegisterRequest"} 
+      }
+     */
     const { fullname, username, email, password, passwordConfirm } =
       req.body as unknown as registerType
 
@@ -120,7 +141,7 @@ export default {
       if (error instanceof yup.ValidationError) {
         const errors = error.inner.reduce(
           (acc, curr) => {
-            if (curr.path) acc[curr.path] = curr.message
+            if (curr.path && !acc[curr.path]) acc[curr.path] = curr.message
             return acc
           },
           {} as Record<string, string>,
@@ -140,6 +161,7 @@ export default {
 
   async login(req: Request, res: Response) {
     /**
+      #swagger.tags = ['Auth']
       #swagger.requestBody = {
         required: true,
         schema: {$ref: "#/components/schemas/LoginRequest"} 
@@ -151,6 +173,7 @@ export default {
       // get user data based identifier (email/username)
       const userByIdentifier = await UserModel.findOne({
         $or: [{ email: identifier }, { username: identifier }],
+        isActive: true,
       })
 
       if (!userByIdentifier) {
@@ -207,6 +230,7 @@ export default {
 
   async me(req: IReqUser, res: Response) {
     /**
+      #swagger.tags = ['Auth']
       #swagger.security = [{
         "bearerAuth": []
       }]
@@ -238,6 +262,44 @@ export default {
 
       return res.status(500).json({
         message: 'Internal Server Error',
+      })
+    }
+  },
+
+  async activation(req: Request, res: Response) {
+    /**
+      #swagger.tags = ['Auth']
+      #swagger.requestBody = {
+        required: true,
+        schema: {
+          $ref: '#/components/schemas/ActivationRequest' 
+        } 
+      }
+     */
+    try {
+      const { code } = req.body as { code: string }
+
+      const user = await UserModel.findOneAndUpdate(
+        {
+          activationCode: code,
+        },
+        {
+          isActive: true,
+        },
+        {
+          returnDocument: 'after',
+        },
+      )
+
+      return res.status(200).json({
+        message: 'User successfully activated',
+        data: user,
+      })
+    } catch (error) {
+      const err = error as unknown as Error
+      return res.status(400).json({
+        message: err.message,
+        data: null,
       })
     }
   },

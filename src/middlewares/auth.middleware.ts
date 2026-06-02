@@ -10,7 +10,7 @@ export default (req: Request, res: Response, next: NextFunction) => {
 
   if (!authorization) {
     return res.status(403).json({
-      messsage: 'Unauthorized',
+      message: 'Unauthorized',
       data: null,
     })
   }
@@ -19,7 +19,7 @@ export default (req: Request, res: Response, next: NextFunction) => {
 
   if (!(prefix === 'Bearer' && token)) {
     return res.status(403).json({
-      messsage: 'Unauthorized',
+      message: 'Unauthorized',
       data: null,
     })
   }
@@ -28,7 +28,7 @@ export default (req: Request, res: Response, next: NextFunction) => {
 
   if (!user) {
     return res.status(403).json({
-      messsage: 'Unauthorized',
+      message: 'Unauthorized',
       data: null,
     })
   }

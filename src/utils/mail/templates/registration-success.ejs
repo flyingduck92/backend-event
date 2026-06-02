@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>
+    Event - User Activation
+  </title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+
+      font-family: 'Arial', sans-serif;
+      background-color: #f4f4f4;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 2px auto;
+      border-color: #fff;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      overflow: hidden;
+    }
+
+    .header {
+      background-color: #4caf50;
+      padding: 1.25rem;
+      text-align: center;
+    }
+
+    .header h1 {
+      color: #fff;
+    }
+
+    .content {
+      padding: 1.25rem;
+    }
+
+    .footer {
+      background-color: #f1f1f1;
+      color:#555;
+      padding: 0.625rem;
+      text-align: center;
+      font-size: 0.75rem;
+    }
+
+    .button {
+      display: inline-block;
+      padding: 0.42rem 1.25rem;
+      background-color: #4caf50;
+      color: #fff;
+      border: 0;
+      border-radius: 5px;
+      text-decoration: none;
+      line-height: 1.35;
+    }
+
+    .button:active {
+      scale: 0.97;
+    }
+
+    .note {
+      font-size: 0.85rem;
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        width: 100%;
+        margin: 0;
+        border-radius: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Selamat Datang</h1>
+    </div>
+    <div class="content">
+      <p>Halo <%= username %>,</p>
+      <p>Terima kasih sudah mendaftar ke layanan kami.</p>
+      <p>Berikut ini adalah informasi dari akun anda:</p>
+      <ul>
+        <li>
+          <strong>Name: </strong>
+          <%= fullname %>
+        </li>
+        <li>
+          <strong>Email: </strong>
+          <%= email %>
+        </li>
+        <li>
+          <strong>Tanggal Pendaftaran: </strong>
+          <%= createdAt %>
+        </li>
+      </ul>
+      <p>
+        Untuk memulai silahkan klik tombol dibawah ini:
+      </p>
+      <a href="<%= activationLink %>" class="button">Aktifkan Akun</a>
+      <p>Salam hangat dari kami. </p>
+      <p class="note"><strong>Note:</strong> Jika anda memiliki pertanyaan,silahkan kontak admin kami di admin@event-me.com</p>
+    </div>
+    <div class="footer">
+      <p>&copy; 2026 Event Management System. Semua Hak dan Privasi dilindungi Undang-Undang NKRI.</p>
+    </div>
+  </div>
+</body>
+</html>

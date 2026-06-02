@@ -1,5 +1,7 @@
 import mongoose from 'mongoose'
 import { encrypt } from '../utils/encryption'
+import { renderMailHtml, sendMail } from '../utils/mail/mail'
+import { CLIENT_HOST, EMAIL_SMTP_USER } from '../utils/env'
 
 export interface User {
   fullname: string
@@ -10,6 +12,7 @@ export interface User {
   profilePicture: string
   isActive: boolean
   activationCode: string
+  createdAt?: string
 }
 
 const Schema = mongoose.Schema
@@ -62,11 +65,36 @@ UserSchema.pre('save', async function () {
   if (!user.isModified('password')) return
 
   user.password = await encrypt(user.password)
+  user.activationCode = await encrypt(user.id)
 })
 
+UserSchema.post('save', async function (doc) {
+  try {
+    const user = doc
+
+    const contentMail = await renderMailHtml('registration-success.ejs', {
+      username: user.username,
+      fullname: user.fullname,
+      email: user.email,
+      createdAt: user.createdAt,
+      activationLink: `${CLIENT_HOST}/auth/activation?code=${user.activationCode}`,
+    })
+
+    await sendMail({
+      from: `Account Activation <${EMAIL_SMTP_USER}>`,
+      to: user.email,
+      subject: 'Aktivasi Akun Anda',
+      html: contentMail,
+    })
+  } catch (error) {
+    console.log('error:', error)
+  }
+})
+
+// remove password field when request user data
 UserSchema.set('toJSON', {
   transform: (_, user) => {
-    const { password, ...rest } = user
+    const { password, activationCode, ...rest } = user
     return {
       ...rest,
     }
