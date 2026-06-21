@@ -27,8 +27,8 @@ importers:
         specifier: ^9.6.1
         version: 9.6.3
       nodemailer:
-        specifier: ^8.0.10
-        version: 8.0.10
+        specifier: ^9.0.1
+        version: 9.0.1
       swagger-autogen:
         specifier: ^2.23.7
         version: 2.23.7
@@ -911,8 +911,8 @@ packages:
     resolution: {integrity: sha512-8Ofs/AUQh8MaEcrlq5xOX0CQ9ypTF5dl78mjlMNfOK08fzpgTHQRQPBxcPlEtIw0yRpws+Zo/3r+5WRby7u3Gg==}
     engines: {node: '>= 0.6'}
 
-  nodemailer@8.0.10:
-    resolution: {integrity: sha512-BLFuSth7QtHOkBzyqTehWWyub0NTRDuK2Q2SQfnGLsrJnzyU+Yeh4WpV1eZGuARFj1xQJHIdnTuJZLP+b9R1GQ==}
+  nodemailer@9.0.1:
+    resolution: {integrity: sha512-Gwv8SQewT616ZM/URn0H54b8PWo/Wum7md3EW2aWy1lO27+WZCX+Xyak3J+NlmHUjDh5ME+uesJUDRbR3Ye8Bw==}
     engines: {node: '>=6.0.0'}
 
   object-assign@4.1.1:
@@ -1958,7 +1958,7 @@ snapshots:
 
   negotiator@1.0.0: {}
 
-  nodemailer@8.0.10: {}
+  nodemailer@9.0.1: {}
 
   object-assign@4.1.1: {}
 
